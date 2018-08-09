@@ -16,6 +16,7 @@ import java.util.logging.Logger;
  * @author hcadavid
  */
 public class HostBlackListsValidator {
+    int oC = 0;
 
     private static final int BLACK_LIST_ALARM_COUNT=5;
     
@@ -29,7 +30,7 @@ public class HostBlackListsValidator {
      * @param ipaddress suspicious host's IP address.
      * @return  Blacklists numbers where the given host's IP address was found.
      */
-    public List<Integer> checkHost(String ipaddress){
+    public List<Integer> checkHost(String ipaddress, int N){
         
         LinkedList<Integer> blackListOcurrences=new LinkedList<>();
         
@@ -47,6 +48,7 @@ public class HostBlackListsValidator {
                 blackListOcurrences.add(i);
                 
                 ocurrencesCount++;
+                oC = ocurrencesCount;
             }
         }
         
@@ -65,6 +67,9 @@ public class HostBlackListsValidator {
     
     private static final Logger LOG = Logger.getLogger(HostBlackListsValidator.class.getName());
     
+    public int Ocurrences(){
+        return oC;
+    }
     
     
 }
