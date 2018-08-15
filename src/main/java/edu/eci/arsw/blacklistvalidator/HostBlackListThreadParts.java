@@ -13,25 +13,34 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author hcadavid
+ * @author 2110111
  */
-public class HostBlackListsValidator {
+public class HostBlackListThreadParts extends Thread{
     int oC = 0;
 
     private static final int BLACK_LIST_ALARM_COUNT=5;
     
+    private String ipAddress;
+    private int vi,vf;
+    private List<Integer> blackListOcurrences;
+
+    @Override
+    public void run() {
+        blackListOcurrences = checkHost(ipAddress, vi,vf);
+         System.out.println("The host was found in the following blacklists:"+blackListOcurrences);
+        Ocurrences();
+    }
     
-    /**
-     * Check the given host's IP address in all the available black lists,
-     * and report it as NOT Trustworthy when such IP was reported in at least
-     * BLACK_LIST_ALARM_COUNT lists, or as Trustworthy in any other case.
-     * The search is not exhaustive: When the number of occurrences is equal to
-     * BLACK_LIST_ALARM_COUNT, the search is finished, the host reported as
-     * NOT Trustworthy, and the list of the five blacklists returned.
-     * @param ipaddress suspicious host's IP address.
-     * @return  Blacklists numbers where the given host's IP address was found.
-     */
-    public List<Integer> checkHost(String ipaddress, int N){
+    
+
+    public HostBlackListThreadParts(String ipaddress, int vi, int vf) {
+        ipAddress = ipaddress;
+        this.vi = vi;
+        this.vf = vf;
+    }
+    
+    
+    public List<Integer> checkHost(String ipaddress, int vi, int vf){
         
         LinkedList<Integer> blackListOcurrences=new LinkedList<>();
         
@@ -39,9 +48,9 @@ public class HostBlackListsValidator {
         
         HostBlacklistsDataSourceFacade skds=HostBlacklistsDataSourceFacade.getInstance();
         
-        int checkedListsCount=0;
-        
-        for (int i=0;i<skds.getRegisteredServersCount() && ocurrencesCount<BLACK_LIST_ALARM_COUNT;i++){
+        int checkedListsCount=vi;
+       
+        for (int i=vi;i< vf && ocurrencesCount<BLACK_LIST_ALARM_COUNT;i++){
             checkedListsCount++;
             
             if (skds.isInBlackListServer(i, ipaddress)){
@@ -68,9 +77,7 @@ public class HostBlackListsValidator {
     
     private static final Logger LOG = Logger.getLogger(HostBlackListsValidator.class.getName());
     
-    public int Ocurrences(){
-        return oC;
+    public void Ocurrences(){
+        System.out.printf("%d",oC);
     }
-    
-    
 }

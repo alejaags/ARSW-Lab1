@@ -15,8 +15,8 @@ public class Main {
     
     public static void main(String a[]){
         
-        Thread t = new HostBlackListThread("202.24.34.55",10);
-        t.run();
+        Thread t = new HostBlackListThread("202.24.34.55",11);
+        t.start();
         
     }
     
